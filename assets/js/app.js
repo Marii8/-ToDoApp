@@ -1,15 +1,37 @@
 let removeIcon ='<i class="fas fa-trash"></i>';
 let doneIcon ='<i class="far fa-check-circle"></i>';
+let data;
 
+// console.log(localStorage);
+console.log(localStorage);
 
-
+if (localStorage.getItem('todoList')){
+    data = JSON.parse(localStorage.getItem('todoList'));
+    for(let taskName of data.li){
+        addTaskToDOM(taskName);
+    }
+} else {
+    data = {
+        li: [],
+        done: [],
+    };
+}
 
 let add = document.getElementById('add');
 add.addEventListener('click', function(){
     let taskName = document.getElementById('task').value;
 // 入力タスクを変数に入れてから、タスク入力欄のユーザーが入れた入力を消す。
     document.getElementById('task').value = '';
+//ユーザーが入力した値を保存する
+    data.li.push(taskName);
+    localStorage.setItem('todoList', JSON.stringify(data));
 
+    addTaskToDOM(taskName);
+
+})
+
+
+function addTaskToDOM(taskName){
 //タスク名を入れたliタグをnotyetに追加する
     let li = document.createElement('li');
     li.append(taskName);
@@ -38,8 +60,7 @@ add.addEventListener('click', function(){
 
 //完了ボタンが押されたらdoneセクションへ移動する処理
     done.addEventListener('click', doneTask);
-
-})
+}
 
 
 // -----------------関数---------------------
