@@ -5,17 +5,25 @@ let data;
 // console.log(localStorage);
 console.log(localStorage);
 
-if (localStorage.getItem('todoList')){
+if (localStorage.getItem('todoList') || localStorage.getItem('doneList')){
     data = JSON.parse(localStorage.getItem('todoList'));
     for(let taskName of data.li){
         addTaskToDOM(taskName);
     }
+
+    data2 = JSON.parse(localStorage.getItem('doneList'));
+    for(let task of data.done){
+        console.log(task);
+    }
+
 } else {
-    data = {
-        li: [],
-        done: [],
-    };
+        data = {
+            li: [],
+            done: [],
+        };
 }
+
+
 
 let add = document.getElementById('add');
 add.addEventListener('click', function(){
@@ -60,6 +68,7 @@ function addTaskToDOM(taskName){
 
 //完了ボタンが押されたらdoneセクションへ移動する処理
     done.addEventListener('click', doneTask);
+
 }
 
 
@@ -73,4 +82,7 @@ function removeTask(){
 function doneTask(){
         let task = this.parentNode.parentNode;
         document.getElementById('done').appendChild(task);
+        // console.log(task);
+        data.done.push(task);
+        localStorage.setItem('doneList', JSON.stringify(data));
     }
